@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationInsights", "IntegrationInsights.csproj", "{43F08AE5-E034-4654-9CCC-FAFA0BF3D083}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43F08AE5-E034-4654-9CCC-FAFA0BF3D083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43F08AE5-E034-4654-9CCC-FAFA0BF3D083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43F08AE5-E034-4654-9CCC-FAFA0BF3D083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43F08AE5-E034-4654-9CCC-FAFA0BF3D083}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6008F83B-1FEA-44A5-A96B-077CE259AE41}
+	EndGlobalSection
+EndGlobal
