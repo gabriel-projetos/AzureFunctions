@@ -20,19 +20,14 @@ namespace Api.Service.CepsMongoDb.Endpoints
 {
     public class CepReadingEndpoint
     {
+        //https://viacep.com.br/
         const string VIA_CEP_URL = "https://viacep.com.br/ws/{0}/json/";
 
-        private CepDbContext DBManager;
+        private readonly CepDbContext DBManager;
 
         public CepReadingEndpoint(CepDbContext dbManager)
         {
             DBManager = dbManager;
-        }
-
-        [FunctionName("hello")]
-        public async Task<IActionResult> Hello([HttpTrigger(AuthorizationLevel.Function, "get", Route = "hello")] HttpRequest req, ILogger log)
-        {
-            return await Task.FromResult(new OkObjectResult("hello"));
         }
 
         [FunctionName("CreateCepReading")]
@@ -48,12 +43,15 @@ namespace Api.Service.CepsMongoDb.Endpoints
                 var cepReading = JsonConvert.DeserializeObject<CepModel>(requestBody);
 
                 await DBManager.AddAddressCep(cepReading);
+                
                 return new OkObjectResult(cepReading);
             }
             catch (Exception e)
             {
-                var objectResult = new ObjectResult(e.Message);
-                objectResult.StatusCode = (int)HttpStatusCode.InternalServerError;
+                var objectResult = new ObjectResult(e.Message)
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
                 return objectResult;
             }
         }
@@ -79,15 +77,17 @@ namespace Api.Service.CepsMongoDb.Endpoints
             }
             catch (Exception e)
             {
-                var objectResult = new ObjectResult(e.Message);
-                objectResult.StatusCode = (int)HttpStatusCode.InternalServerError;
+                var objectResult = new ObjectResult(e.Message)
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
                 return objectResult;
             }
         }
 
         //todo: percorrer lista de ceps para inserir na base
 
-        private async Task<CepModel> FindCepWeb(string cep)
+        private static async Task<CepModel> FindCepWeb(string cep)
         {
             var url = string.Format(VIA_CEP_URL, cep);
 
