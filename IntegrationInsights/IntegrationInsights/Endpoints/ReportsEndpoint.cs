@@ -12,6 +12,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Flurl.Http;
 using System.Diagnostics;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.Configuration;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace IntegrationInsights.Endpoints
 {
@@ -19,10 +23,16 @@ namespace IntegrationInsights.Endpoints
     {
         const string X_API_KEY = "jdcegq36w4lrjnwxmnh11gftloybcz44b7nv4wcy";
         const string ApplicationInsightsId = "02ec0fd6-4a67-4479-a2d3-bd867a0def15";
+        private IConfiguration Configuration;
+
+        public ReportsEndpoint(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
 
         [FunctionName("SendLogsInsights")]
-        public static async Task<IActionResult> SendLogsInsights(
+        public async Task<IActionResult> SendLogsInsights(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -45,6 +55,21 @@ namespace IntegrationInsights.Endpoints
                 .WithHeader("X-Api-Key", X_API_KEY)
                 .WithTimeout(TimeSpan.FromMinutes(5))
                 .GetJsonAsync<dynamic>();
+
+
+            var config = TelemetryConfiguration.CreateDefault();
+            config.InstrumentationKey = Configuration.GetConnectionStringOrSetting("APPINSIGHTS_INSTRUMENTATIONKEY");
+
+            var insightsClient = new TelemetryClient(config);
+
+            var evt = new EventTelemetry("Teste de evento");
+            evt.Properties.Add("Propriedade", "Valor");
+            evt.Properties.Add("JsonData", "Valor");
+            evt.Context.GlobalProperties.Add("ContextPropriedade", "Valor");
+
+
+            insightsClient.TrackEvent(evt);
+            insightsClient.Flush();
 
             return new OkObjectResult(response);
         }
