@@ -34,17 +34,17 @@ namespace Api.Service.CepsMongoDb.Service
 
         public async Task<CepModel> GetAddressCep(string cep)
         {
-            return await Collection().Find(x => x.cep == cep).FirstOrDefaultAsync();
+            return await Collection().Find(x => x.Cep == cep).FirstOrDefaultAsync();
         }
 
         public async Task DeleteCep(string id)
         {
-            await Collection().DeleteOneAsync(cepReaning => cepReaning.id == id);
+            await Collection().DeleteOneAsync(cepReaning => cepReaning.Id == id);
         }
 
         public async Task UpdateCep(CepModel cepModel)
         {
-            await Collection().ReplaceOneAsync(x => x.id == cepModel.id, cepModel);
+            await Collection().ReplaceOneAsync(x => x.Id == cepModel.Id, cepModel);
         }
 
         private IMongoCollection<CepModel> Collection()
