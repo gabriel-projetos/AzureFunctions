@@ -50,7 +50,7 @@ namespace IntegrationInsights.Endpoints
 
 
             var query = "traces | where message contains 'Enviando'";
-            var url = $"https://api.applicationinsights.io/v1/apps/{ApplicationInsightsId}/query?query={query}";
+            var url = $"https://api.applicationinsights.io/v1/apps/f4441da9-232c-477a-beec-7512a0d725f5/query?query={query}";
             var response = await url
                 .WithHeader("X-Api-Key", X_API_KEY)
                 .WithTimeout(TimeSpan.FromMinutes(5))
