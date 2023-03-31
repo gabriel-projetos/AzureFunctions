@@ -36,9 +36,12 @@ namespace Api.Service.UserRegistration.Endpoints
             var user = await req.BodyDeserialize<WrapperInLogin>().ConfigureAwait(false);
             if (!user.IsValid()) return new BadRequestObjectResult(new WrapperOutError { Message = "Dado de login ou senha inválido." });
 
-            
-            
-            return new OkResult();
+            var remoteUser = await UserService.Validade(user.Login, user.Password).ConfigureAwait(false);
+            if (remoteUser == null) return new UnauthorizedResult();
+
+            var response = await UserUtilities.JwtResult(remoteUser, req, UserService).ConfigureAwait(false);
+
+            return response;
         }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Service.UserRegistration.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20230330022540_initial migration")]
-    partial class initialmigration
+    [Migration("20230331012533_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
