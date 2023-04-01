@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Api.Service.UserRegistration.Context
 {
-    internal class ApiDbContext : DbContext
+    public class ApiDbContext : DbContext
     {
 
         internal DbSet<UserModel> Users { get; set; }
@@ -26,6 +26,7 @@ namespace Api.Service.UserRegistration.Context
             modelBuilder.Entity<UserModel>().Property(m => m.Login).IsRequired();
             modelBuilder.Entity<UserModel>().Property(m => m.Password).IsRequired();
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
+            modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
 
         }
 

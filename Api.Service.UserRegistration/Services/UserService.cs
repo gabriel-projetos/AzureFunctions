@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Api.Service.UserRegistration.Services
 {
     [Ioc(Interface = typeof(UserService))]
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         private ApiDbContext Context { get; }
 
@@ -49,7 +49,7 @@ namespace Api.Service.UserRegistration.Services
             return false;
         }
 
-        internal async Task<UserModel> LoadUserData(UserModel model)
+        public async Task<UserModel> LoadUserData(UserModel model)
         {
             var query = Context.Users.Where(m => m.Uid == model.Uid);
 
