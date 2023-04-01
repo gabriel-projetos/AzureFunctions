@@ -59,5 +59,15 @@ namespace Api.Service.UserRegistration.Services
 
             return remoteUser;
         }
+
+        public async Task<IUser> UserCreate(IUser user)
+        {
+            if (user is not UserModel model) return null;
+
+            Context.Users.Add(model);
+            await Context.SaveChangesAsync();
+
+            return model;
+        }
     }
 }

@@ -6,6 +6,9 @@ using Google.Protobuf.WellKnownTypes;
 using Interfaces.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Azure.WebJobs;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -107,6 +110,57 @@ namespace Api.Service.UserRegistration.Utilities
             return result;
         }
 
+        public static async Task<JwtData> FromJwt(string jwt, bool validateLifetime = true)
+        {
+            var info = Validate(jwt, validateLifetime);
+
+            if (info == null) return null;
+
+            var result = new JwtData(info.Claims.ToList())
+            {
+                Jwt = jwt,
+                JwtToken = info,
+                NotBefore = info.ValidFrom,
+                ExpireAt = info.ValidTo
+            };
+
+            await result.CreateUserModel();
+
+            return result;
+        }
+
         
+
+        private static JwtSecurityToken Validate(string token, bool validateLifetime)
+        {
+            JwtSecurityToken reuslt = null;
+            try
+            {
+                var jwtKey = Encoding.UTF8.GetBytes(Key);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var paramsValidation = new TokenValidationParameters()
+                {
+                    RequireExpirationTime = true,
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = validateLifetime,
+                    IssuerSigningKey = new SymmetricSecurityKey(jwtKey),
+                    ValidAudience = Audience,
+                    ValidIssuer = Issuer
+                };
+
+                SecurityToken securityToken;
+                tokenHandler.ValidateToken(token, paramsValidation, out securityToken);
+
+                reuslt = tokenHandler.ReadJwtToken(token);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+
+            return reuslt;
+        }
     }
 }

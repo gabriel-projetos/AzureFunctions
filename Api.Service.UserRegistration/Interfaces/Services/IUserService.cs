@@ -9,5 +9,6 @@ namespace Interfaces.Services
 {
     public interface IUserService
     {
+        Task<IUser> UserCreate(IUser user);
     }
 }
