@@ -27,6 +27,9 @@ namespace Api.Service.UserRegistration.Context
             modelBuilder.Entity<UserModel>().Property(m => m.Password).IsRequired();
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
+            modelBuilder.Entity<UserModel>().HasOne(m => m.UserInfo).WithOne(x => x.User).HasForeignKey<UserInfoModel>(x => x.UserUid);
+
+            DefaultModelSetup<UserInfoModel>(modelBuilder);
 
         }
 
