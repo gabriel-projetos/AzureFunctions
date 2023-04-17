@@ -1,11 +1,13 @@
 ﻿using Api.Service.UserRegistration.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Interfaces.Models.Enums;
 
 namespace Api.Service.UserRegistration.Context
 {
@@ -28,9 +30,12 @@ namespace Api.Service.UserRegistration.Context
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
             modelBuilder.Entity<UserModel>().HasOne(m => m.UserInfo).WithOne(x => x.User).HasForeignKey<UserInfoModel>(x => x.UserUid);
+            modelBuilder.Entity<UserModel>().HasMany(x => x.Authorizations).WithOne(x => x.User).HasForeignKey(x => x.UserUid);
 
             DefaultModelSetup<UserInfoModel>(modelBuilder);
 
+            DefaultModelSetup<AuthorizationModel>(modelBuilder);
+            modelBuilder.Entity<AuthorizationModel>().Property(x => x.Role).HasConversion(new EnumToStringConverter<ERole>());
         }
 
         public override int SaveChanges()

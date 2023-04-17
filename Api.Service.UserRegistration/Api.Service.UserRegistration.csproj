@@ -5,10 +5,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Api.Service.UserRegistration.Tests\**" />
+    <Compile Remove="ConsoleApp\**" />
     <Compile Remove="Interfaces\**" />
     <EmbeddedResource Remove="Api.Service.UserRegistration.Tests\**" />
+    <EmbeddedResource Remove="ConsoleApp\**" />
     <EmbeddedResource Remove="Interfaces\**" />
     <None Remove="Api.Service.UserRegistration.Tests\**" />
+    <None Remove="ConsoleApp\**" />
     <None Remove="Interfaces\**" />
   </ItemGroup>
   <ItemGroup>

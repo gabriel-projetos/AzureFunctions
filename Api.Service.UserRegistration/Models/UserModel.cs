@@ -1,4 +1,5 @@
 ﻿using Interfaces.Models;
+using System.Collections.Generic;
 
 namespace Api.Service.UserRegistration.Models
 {
@@ -10,5 +11,7 @@ namespace Api.Service.UserRegistration.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public UserInfoModel UserInfo { get; set; }
+
+        public List<AuthorizationModel> Authorizations { get; set; }
     }
 }

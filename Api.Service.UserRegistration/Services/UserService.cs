@@ -64,6 +64,11 @@ namespace Api.Service.UserRegistration.Services
         {
             if (user is not UserModel model) return null;
 
+            if (model.Authorizations.Count == 0)
+            {
+                model.Authorizations.Add(new AuthorizationModel { Role = Enums.ERole.Viewer });
+            }
+
             Context.Users.Add(model);
             await Context.SaveChangesAsync();
 
