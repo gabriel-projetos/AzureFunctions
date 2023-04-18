@@ -64,5 +64,8 @@ namespace Api.Service.UserRegistration.Models.Wrappers.Out
             get => Data.UpdatedAt;
             set => Data.UpdatedAt = value;
         }
+
+        //todo adiciona role no wrapper
+        //todo adicionar userInfo no wrapper
     }
 }

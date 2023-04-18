@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static Interfaces.Models.Enums;
 
 namespace Api.Service.UserRegistration.Models
 {
@@ -16,10 +17,11 @@ namespace Api.Service.UserRegistration.Models
     {
         private const string ClaimUserUid = "user_uid";
         private const string ClaimEmail = "email";
+        private const string ClaimRole = "role";
 
         public JwtData(IUser model)
         {
-            Model = model;
+            Model = model as UserModel;
         }
 
         public JwtData(List<Claim> claims)
@@ -31,7 +33,7 @@ namespace Api.Service.UserRegistration.Models
         
         public List<Claim> AdditionalClaims { get; set; } = new List<Claim>();
 
-        public IUser Model { get; set; }
+        public UserModel Model { get; set; }
 
         public string Jwt { get; set; }
 
@@ -49,10 +51,10 @@ namespace Api.Service.UserRegistration.Models
             //claims.Add(new Claim(ClaimName, Model.Detail.Name ?? ""));
             claims.Add(new Claim(ClaimUserUid, Model.Uid.ToString()));
 
-            //foreach (var permission in Model.Roles)
-            //{
-            //    claims.Add(new Claim(ClaimRole, permission.Type.ToString()));
-            //}
+            foreach (var permission in Model.Authorizations)
+            {
+                claims.Add(new Claim(ClaimRole, permission.Role.ToString()));
+            }
 
             return claims;
         }
@@ -71,6 +73,18 @@ namespace Api.Service.UserRegistration.Models
                     case ClaimUserUid:
                         {
                             data.Uid = Guid.Parse(clam.Value);
+                            break;
+                        }
+                    case "role":
+                        {
+                            if (Enum.TryParse<ERole>(clam.Value, out var role))
+                            {
+                                data.Authorizations.Add(new AuthorizationModel
+                                {
+                                    Role = role
+                                });
+                            }
+
                             break;
                         }
                     default:

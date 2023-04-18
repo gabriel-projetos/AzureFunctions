@@ -15,6 +15,8 @@ namespace Api.Service.UserRegistration.Context
     {
 
         internal DbSet<UserModel> Users { get; set; }
+        internal DbSet<UserInfoModel> UserInfos { get; set; }
+        internal DbSet<AuthorizationModel> Authorizations { get; set; }
 
         public ApiDbContext(DbContextOptions<ApiDbContext> ctx) : base(ctx)
         {

@@ -13,5 +13,10 @@ namespace Api.Service.UserRegistration.Models
         public UserInfoModel UserInfo { get; set; }
 
         public List<AuthorizationModel> Authorizations { get; set; }
+
+        public UserModel()
+        {
+            Authorizations = new List<AuthorizationModel>();
+        }
     }
 }

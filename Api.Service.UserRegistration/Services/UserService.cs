@@ -25,7 +25,7 @@ namespace Api.Service.UserRegistration.Services
 
         public async Task<UserModel> Validade(string login, string password)
         {
-            var remoteUser = await Context.Users.Where(m => m.Login == login).FirstOrDefaultAsync();
+            var remoteUser = await Context.Users.Where(m => m.Login == login).Include(x => x.UserInfo).Include(x => x.Authorizations).FirstOrDefaultAsync();
 
             if (remoteUser != null && !await CorrectPassword(password, remoteUser.Password))
             {
