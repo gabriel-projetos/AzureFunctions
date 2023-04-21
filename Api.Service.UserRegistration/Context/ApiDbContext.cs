@@ -33,6 +33,7 @@ namespace Api.Service.UserRegistration.Context
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
             modelBuilder.Entity<UserModel>().HasOne(m => m.UserInfo).WithOne(x => x.User).HasForeignKey<UserInfoModel>(x => x.UserUid);
             modelBuilder.Entity<UserModel>().HasMany(x => x.Authorizations).WithOne(x => x.User).HasForeignKey(x => x.UserUid);
+            modelBuilder.Entity<UserModel>().ToTable("Users", b => b.IsTemporal()); //https://learn.microsoft.com/pt-br/ef/core/what-is-new/ef-core-6.0/whatsnew#configuring-a-temporal-table
 
             DefaultModelSetup<UserInfoModel>(modelBuilder);
 
