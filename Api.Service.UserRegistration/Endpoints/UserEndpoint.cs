@@ -15,11 +15,18 @@ using Api.Service.UserRegistration.Extensions;
 using Api.Service.UserRegistration.Utilities;
 using Api.Service.UserRegistration.Models.Wrappers.In;
 using Api.Service.UserRegistration.Models.Wrappers.Out;
+using Interfaces.Models;
+using static Interfaces.Models.Enums;
 
 namespace Api.Service.UserRegistration.Endpoints
 {
     internal class UserEndpoint
     {
+        public List<ERole> ManagementUsers = new()
+        {
+            ERole.Admin
+        };
+
         public UserService UserService { get; }
 
         public UserEndpoint(UserService userService)
@@ -43,6 +50,21 @@ namespace Api.Service.UserRegistration.Endpoints
             var wr = await WrapperOutUser.From(result).ConfigureAwait(false);
 
             return new OkObjectResult(wr);
+        }
+
+        [FunctionName("UserDelete")]
+        public async Task<IActionResult> UserDelete(
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "v1/user/uid/{userUid}")] HttpRequest req,
+            ILogger log,
+            Guid userUid)
+        {
+            var jwt = await req.JwtInfo().ConfigureAwait(false);
+            if (jwt.Model.HasAnyRole(ManagementUsers) == false) return new UnauthorizedResult();
+
+            var result = await UserService.Delete(userUid).ConfigureAwait(false);
+            if (result == false) return new BadRequestResult();
+
+            return new OkResult();
         }
 
         //[FunctionName("UserUpdate")]

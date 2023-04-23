@@ -10,5 +10,7 @@ namespace Interfaces.Services
     public interface IUserService
     {
         Task<IUser> UserCreate(IUser user);
+
+        Task<bool> Delete(Guid userUid);
     }
 }

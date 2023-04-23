@@ -33,12 +33,13 @@ namespace Api.Service.UserRegistration.Context
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
             modelBuilder.Entity<UserModel>().HasOne(m => m.UserInfo).WithOne(x => x.User).HasForeignKey<UserInfoModel>(x => x.UserUid);
             modelBuilder.Entity<UserModel>().HasMany(x => x.Authorizations).WithOne(x => x.User).HasForeignKey(x => x.UserUid);
-            modelBuilder.Entity<UserModel>().ToTable("Users", b => b.IsTemporal()); //https://learn.microsoft.com/pt-br/ef/core/what-is-new/ef-core-6.0/whatsnew#configuring-a-temporal-table
+            modelBuilder.Entity<UserModel>().ToTable(nameof(Users), b => b.IsTemporal()); //https://learn.microsoft.com/pt-br/ef/core/what-is-new/ef-core-6.0/whatsnew#configuring-a-temporal-table
 
             DefaultModelSetup<UserInfoModel>(modelBuilder);
 
             DefaultModelSetup<AuthorizationModel>(modelBuilder);
             modelBuilder.Entity<AuthorizationModel>().Property(x => x.Role).HasConversion(new EnumToStringConverter<ERole>());
+            modelBuilder.Entity<AuthorizationModel>().ToTable(nameof(Authorizations), b => b.IsTemporal());
         }
 
         public override int SaveChanges()

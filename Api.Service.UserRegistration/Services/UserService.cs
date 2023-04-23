@@ -35,6 +35,16 @@ namespace Api.Service.UserRegistration.Services
             return remoteUser;
         }
 
+        private string ConvertPassword(string password)
+        {
+            if (password.StartsWith("##no|compute##"))
+            {
+                return password.Replace("##no|compute##", "");
+            }
+
+            return BCrypt.Net.BCrypt.HashPassword(password, 10);
+        }
+
         public async Task<bool> CorrectPassword(string remotePassword, string localPassword)
         {
             if (remotePassword == null) return false;
@@ -54,7 +64,7 @@ namespace Api.Service.UserRegistration.Services
             var query = Context.Users.Where(m => m.Uid == model.Uid);
 
             var remoteUser = await query
-                //.Include(p => p.DbDetail)
+                .Include(p => p.UserInfo)
                 .FirstOrDefaultAsync().ConfigureAwait(false);
 
             return remoteUser;
@@ -63,6 +73,10 @@ namespace Api.Service.UserRegistration.Services
         public async Task<IUser> UserCreate(IUser user)
         {
             if (user is not UserModel model) return null;
+
+            if (model.Password == null) model.Password = Guid.NewGuid().ToString();
+
+            model.Password = ConvertPassword(model.Password);
 
             if (model.Authorizations.Count == 0)
             {
@@ -73,6 +87,25 @@ namespace Api.Service.UserRegistration.Services
             await Context.SaveChangesAsync();
 
             return model;
+        }
+
+        public async Task<bool> Delete(Guid userUid)
+        {
+            try
+            {
+                var models = Context.Users.Where(x => x.Uid == userUid);
+                Context.RemoveRange(models);
+
+                await Context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
         }
     }
 }
