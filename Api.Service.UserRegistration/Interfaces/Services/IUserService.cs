@@ -12,5 +12,7 @@ namespace Interfaces.Services
         Task<IUser> UserCreate(IUser user);
 
         Task<bool> Delete(Guid userUid);
+
+        Task<IUser> Update(IUser user);
     }
 }

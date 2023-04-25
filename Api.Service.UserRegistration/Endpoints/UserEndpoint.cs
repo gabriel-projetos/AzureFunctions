@@ -67,23 +67,23 @@ namespace Api.Service.UserRegistration.Endpoints
             return new OkResult();
         }
 
-        //[FunctionName("UserUpdate")]
-        //public async Task<IActionResult> UserUpdate(
-        //    [HttpTrigger(AuthorizationLevel.Function, "put", Route = "v1/user")] HttpRequest req,
-        //    ILogger log)
-        //{
-        //    var jwt = await req.JwtInfo().ConfigureAwait(false);
-        //    if (jwt.Model.Uid == Guid.Empty) return new UnauthorizedResult();
+        [FunctionName("UserUpdate")]
+        public async Task<IActionResult> UserUpdate(
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "v1/user")] HttpRequest req,
+            ILogger log)
+        {
+            var jwt = await req.JwtInfo().ConfigureAwait(false);
+            if (jwt.Model.Uid == Guid.Empty) return new UnauthorizedResult();
 
-        //    var user = await req.BodyDeserialize<WrapperInUser<UserModel>>();
-        //    if (user == null) new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos." });
+            var user = await req.BodyDeserialize<WrapperInUser<UserModel>>();
+            if (user == null) new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos." });
 
-        //    var result = await UserService.UserUpdate(await user.Result()).ConfigureAwait(false);
-        //    if (result == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos." });
+            var result = await UserService.UserUpdate(await user.Result()).ConfigureAwait(false);
+            if (result == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos." });
 
-        //    var wr = await WrapperOutUser.From(result).ConfigureAwait(false);
+            var wr = await WrapperOutUser.From(result).ConfigureAwait(false);
 
-        //    return new OkObjectResult(wr);
-        //}
+            return new OkObjectResult(wr);
+        }
     }
 }

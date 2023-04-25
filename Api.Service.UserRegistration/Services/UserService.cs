@@ -107,5 +107,11 @@ namespace Api.Service.UserRegistration.Services
 
             return false;
         }
+
+        //Todo
+        public Task<IUser> Update(IUser user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
