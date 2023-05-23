@@ -29,7 +29,7 @@ namespace Api.Service.UserRegistration.Endpoints
           ILogger log)
         {
             var user = await req.BodyDeserialize<WrapperInLogin>().ConfigureAwait(false);
-            if (!user.IsValid()) return new BadRequestObjectResult(new WrapperOutError { Message = "Dado de login ou senha inválido." });
+            if (!user.IsValid()) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados de login ou senha inválido." });
 
             var remoteUser = await UserService.Validade(user.Login, user.Password).ConfigureAwait(false);
             if (remoteUser == null) return new UnauthorizedResult();

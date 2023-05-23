@@ -108,10 +108,15 @@ namespace Api.Service.UserRegistration.Services
             return false;
         }
 
-        //Todo
-        public Task<IUser> Update(IUser user)
+        public async Task<IUser> Update(IUser user)
         {
-            throw new NotImplementedException();
+            if (user is not UserModel model) return null;
+
+
+            Context.Users.Update(model);
+            await Context.SaveChangesAsync();
+
+            return model;
         }
     }
 }

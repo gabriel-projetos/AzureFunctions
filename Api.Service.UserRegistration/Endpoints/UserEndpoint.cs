@@ -78,7 +78,7 @@ namespace Api.Service.UserRegistration.Endpoints
             var user = await req.BodyDeserialize<WrapperInUser<UserModel>>();
             if (user == null) new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos." });
 
-            var result = await UserService.UserUpdate(await user.Result()).ConfigureAwait(false);
+            var result = await UserService.Update(await user.Result()).ConfigureAwait(false);
             if (result == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos." });
 
             var wr = await WrapperOutUser.From(result).ConfigureAwait(false);
