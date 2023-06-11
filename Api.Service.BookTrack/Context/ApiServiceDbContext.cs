@@ -11,11 +11,19 @@ namespace Api.Service.BookTrack.Context
 {
     public class ApiServiceDbContext : DbContext
     {
+        internal DbSet<UserModel> Users { get; set; }
+
         public ApiServiceDbContext(DbContextOptions<ApiServiceDbContext> ctx) : base(ctx) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            DefaultModelSetup<UserModel>(modelBuilder);
+            modelBuilder.Entity<UserModel>().Property(m => m.Login).IsRequired();
+            modelBuilder.Entity<UserModel>().Property(m => m.Password).IsRequired();
+            modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
+            modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
         }
 
         public override int SaveChanges()
