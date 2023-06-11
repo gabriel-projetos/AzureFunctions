@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Api.Service.BookTrack": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7038",
+      "launchBrowser": false
+    }
+  }
+}
