@@ -1,5 +1,8 @@
-﻿using Api.Service.BookTrack.Models;
+﻿using Api.Service.BookTrack.Context.Converts;
+using Api.Service.BookTrack.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +15,7 @@ namespace Api.Service.BookTrack.Context
     public class ApiServiceDbContext : DbContext
     {
         internal DbSet<UserModel> Users { get; set; }
+        internal DbSet<BookModel> Books { get; set; }
 
         public ApiServiceDbContext(DbContextOptions<ApiServiceDbContext> ctx) : base(ctx) { }
 
@@ -19,11 +23,27 @@ namespace Api.Service.BookTrack.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            var convertListString = new GenericConvert<List<string>>();
+
             DefaultModelSetup<UserModel>(modelBuilder);
             modelBuilder.Entity<UserModel>().Property(m => m.Login).IsRequired();
             modelBuilder.Entity<UserModel>().Property(m => m.Password).IsRequired();
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
+
+            DefaultModelSetup<BookModel>(modelBuilder);
+            modelBuilder.Entity<BookModel>().Property(m => m.Authors).HasConversion(convertListString).HasMaxLength(1024);
+
+            var valueComparer = new ValueComparer<List<string>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList());
+            modelBuilder
+                .Entity<BookModel>()
+                .Property(e => e.Authors)
+                .Metadata
+                .SetValueComparer(valueComparer);
+
         }
 
         public override int SaveChanges()
