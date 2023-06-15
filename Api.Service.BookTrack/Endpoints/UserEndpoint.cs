@@ -45,6 +45,5 @@ namespace Api.Service.BookTrack.Endpoints
             return new OkObjectResult(wrOut);
         }
 
-        
     }
 }
