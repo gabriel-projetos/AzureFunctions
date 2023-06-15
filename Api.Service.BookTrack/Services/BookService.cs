@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Api.Service.BookTrack.Services
 {
     [Ioc(Interface = typeof(BookService))]
-    internal class BookService : IBookService
+    public class BookService : IBookService
     {
         private ApiServiceDbContext Context { get; }
 
