@@ -10,7 +10,7 @@ namespace Api.Service.BookTrack.Tests.ServicesTests
     public class BookServiceTest : BaseTest
     {
         [Fact]
-        public async Task ShouldCreateBookService()
+        public void ShouldCreateBookService()
         {
             BookService bookService = CreateBookService();
 

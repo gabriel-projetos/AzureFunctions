@@ -61,7 +61,7 @@ namespace Interfaces.Models
         /// <summary>
         /// Indica se o livro está disponível, emprestado, reservado ou perdido.
         /// </summary>
-        string Status { get; set; }
+        EStatusType Status { get; set; }
 
         /// <summary>
         /// Data que o livro foi adquirido pela biblioteca
@@ -82,5 +82,13 @@ namespace Interfaces.Models
         /// capa do livro
         /// </summary>
         byte[] BookCover { get; set; }
+    }
+
+    public enum EStatusType
+    {
+        Available, //disponivel
+        Borrowed, //emprestado
+        Reserved, //reservado
+        Lost //perdido
     }
 }

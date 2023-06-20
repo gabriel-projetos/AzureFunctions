@@ -36,7 +36,7 @@ namespace Api.Service.UserRegistration.Tests.Services
             UserService service = CreateUserService();
             
             var json = await AssemblyUtility.LoadWithString("user.json");
-            var model = await (JsonConvert.DeserializeObject<WrapperInUser<UserModel>>(json)).Result();
+            var model = await JsonConvert.DeserializeObject<WrapperInUser<UserModel>>(json).Result();
 
             //act
             var user = await service.UserCreate(model);

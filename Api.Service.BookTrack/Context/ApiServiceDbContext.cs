@@ -1,8 +1,10 @@
 ﻿using Api.Service.BookTrack.Context.Converts;
 using Api.Service.BookTrack.Models;
+using Interfaces.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,7 @@ namespace Api.Service.BookTrack.Context
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
 
             DefaultModelSetup<BookModel>(modelBuilder);
+            modelBuilder.Entity<BookModel>().Property(m => m.Status).HasConversion(new EnumToStringConverter<EStatusType>()).HasMaxLength(50);
             modelBuilder.Entity<BookModel>().Property(m => m.Authors).HasConversion(convertListString).HasMaxLength(1024);
 
             var valueComparer = new ValueComparer<List<string>>(

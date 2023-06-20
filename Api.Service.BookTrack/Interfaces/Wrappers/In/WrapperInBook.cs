@@ -81,7 +81,7 @@ namespace Interfaces.Wrappers.In
         }
 
         [JsonProperty("status")]
-        public string Status
+        public EStatusType Status
         {
             get => Data.Status;
             set => Data.Status = value;

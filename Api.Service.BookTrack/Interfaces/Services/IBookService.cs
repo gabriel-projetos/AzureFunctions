@@ -15,13 +15,13 @@ namespace Interfaces.Services
 
         Task<bool> Delete(Guid uid);
 
-        Task<IBook> Books(BookOptions options);
+        Task<List<IBook>> Books(BookOptions options);
 
         Task<IBook> Get(Guid uid, BookOptions options);
     }
 
     public class BookOptions
     {
-
+        public List<EStatusType> FilterStatus { get; set; }
     }
 }

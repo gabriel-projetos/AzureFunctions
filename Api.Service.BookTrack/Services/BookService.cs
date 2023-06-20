@@ -3,6 +3,7 @@ using Api.Service.BookTrack.Ioc;
 using Api.Service.BookTrack.Models;
 using Interfaces.Models;
 using Interfaces.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,11 @@ namespace Api.Service.BookTrack.Services
             Context = context;
         }
 
-        public Task<IBook> Books(BookOptions options)
+        public async Task<List<IBook>> Books(BookOptions options)
         {
-            throw new NotImplementedException();
+            var result = await Query(options).ToListAsync<IBook>().ConfigureAwait(false);
+
+            return result;
         }
 
         public async Task<IBook> Create(IBook book)
@@ -49,6 +52,15 @@ namespace Api.Service.BookTrack.Services
         public Task<IBook> Update(IBook book)
         {
             throw new NotImplementedException();
+        }
+
+        public IQueryable<BookModel> Query(BookOptions options)
+        {
+            var query = Context.Books.AsQueryable();
+
+            if (options?.FilterStatus != null) query = query.Where(x => options.FilterStatus.Contains(x.Status));
+
+            return query;
         }
     }
 }
