@@ -28,8 +28,10 @@ namespace Api.Service.BookTrack.Services
         public async Task<IBook> BookFrom(string json)
         {
             var wr = JsonConvert.DeserializeObject<WrapperInBook<BookModel>>(json);
-            var result = await wr.Result().ConfigureAwait(false);
 
+            if (wr.IsValid() == false) return null;
+
+            var result = await wr.Result().ConfigureAwait(false);
             return result;
         }
         #endregion

@@ -114,5 +114,12 @@ namespace Interfaces.Wrappers.In
             get => Data.BookCover;
             set => Data.BookCover = value;
         }
+
+        public override bool IsValid()
+        {
+            if (string.IsNullOrEmpty(Title)) return false;
+
+            return true;
+        }
     }
 }

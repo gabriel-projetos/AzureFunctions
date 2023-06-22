@@ -32,6 +32,11 @@ namespace Interfaces.Wrappers
         {
             return Task.FromResult(Data);
         }
+
+        public virtual bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class WrapperBase<T, WT> : WrapperBase<T> where WT : WrapperBase<T, WT>
