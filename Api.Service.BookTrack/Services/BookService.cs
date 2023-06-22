@@ -3,7 +3,9 @@ using Api.Service.BookTrack.Ioc;
 using Api.Service.BookTrack.Models;
 using Interfaces.Models;
 using Interfaces.Services;
+using Interfaces.Wrappers.In;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,16 @@ namespace Api.Service.BookTrack.Services
         {
             Context = context;
         }
+
+        #region froms
+        public async Task<IBook> BookFrom(string json)
+        {
+            var wr = JsonConvert.DeserializeObject<WrapperInBook<BookModel>>(json);
+            var result = await wr.Result().ConfigureAwait(false);
+
+            return result;
+        }
+        #endregion
 
         public async Task<List<IBook>> Books(BookOptions options)
         {

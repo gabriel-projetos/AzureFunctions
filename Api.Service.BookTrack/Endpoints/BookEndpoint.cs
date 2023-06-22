@@ -26,10 +26,10 @@ namespace Api.Service.BookTrack.Endpoints
             [HttpTrigger(AuthorizationLevel.Function, "post", "v1/book")] HttpRequest req,
             ILogger log)
         {
-            var wr = await req.BodyDeserialize<WrapperInBook<BookModel>>();
-            if (wr == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Livro informado inválido" });
+            var json = await req.BodyAsString().ConfigureAwait(false);
 
-            var book = await wr.Result().ConfigureAwait(false);
+            var book = await BookService.BookFrom(json);
+            if (book == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Livro informado inválido" });
 
             var result = await BookService.Create(book).ConfigureAwait(false);
             if (result == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos" });

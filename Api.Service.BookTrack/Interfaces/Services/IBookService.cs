@@ -9,6 +9,10 @@ namespace Interfaces.Services
 {
     public interface IBookService
     {
+        #region froms
+        Task<IBook> BookFrom(string json);
+        #endregion
+
         Task<IBook> Create(IBook book);
 
         Task<IBook> Update(IBook book);
