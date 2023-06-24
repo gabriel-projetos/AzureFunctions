@@ -118,6 +118,7 @@ namespace Interfaces.Wrappers.In
         public override bool IsValid()
         {
             if (string.IsNullOrEmpty(Title)) return false;
+            if (TotalPages <= 0) return false;
 
             return true;
         }
