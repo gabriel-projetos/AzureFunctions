@@ -25,9 +25,13 @@ namespace Api.Service.BookTrack.Services
         }
 
         #region froms
-        public async Task<IBook> BookFrom(string json)
+        public async Task<IBook> BookFrom(string json, IBook baseModel = null)
         {
-            var wr = JsonConvert.DeserializeObject<WrapperInBook<BookModel>>(json);
+            BookModel model = baseModel as BookModel;
+            if (model == null) model = new BookModel();
+
+            var wr = await WrapperInBook<BookModel>.From(model);
+            JsonConvert.PopulateObject(json, wr);
 
             if (wr.IsValid() == false) return null;
 
@@ -58,7 +62,7 @@ namespace Api.Service.BookTrack.Services
             throw new NotImplementedException();
         }
 
-        public Task<IBook> Get(Guid uid, BookOptions options)
+        public Task<IBook> Book(Guid uid, BookOptions options)
         {
             throw new NotImplementedException();
         }

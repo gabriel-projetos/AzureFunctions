@@ -1,13 +1,15 @@
 ﻿using Api.Service.BookTrack.Extensions;
-using Api.Service.BookTrack.Models;
 using Api.Service.BookTrack.Services;
-using Interfaces.Wrappers.In;
+using Interfaces.Models;
+using Interfaces.Services;
 using Interfaces.Wrappers.Out;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Service.BookTrack.Endpoints
@@ -21,24 +23,37 @@ namespace Api.Service.BookTrack.Endpoints
             BookService = bookService;
         }
 
-        [FunctionName("BookCreate")]
-        public async Task<IActionResult> BookCreate(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/management/book")] HttpRequest req,
+        [FunctionName("Books")]
+        public async Task<IActionResult> Books(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/books")] HttpRequest req,
             ILogger log)
         {
             //todo: validar role do jwt
 
-            var json = await req.BodyAsString().ConfigureAwait(false);
+            var options = new BookOptions();
 
-            var book = await BookService.BookFrom(json);
-            if (book == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Livro informado inválido" });
+            if (req.Query.ContainsKey("status_type")) options.FilterStatus = req.Query["status_type"].Select(p => Enum.Parse<EStatusType>(p, true)).ToList();
 
-            var result = await BookService.Create(book).ConfigureAwait(false);
-            if (result == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos" });
+            var results = await BookService.Books(options).ConfigureAwait(false);
 
-            var wrapper = await WrapperOutBook.From(result).ConfigureAwait(false);
-
+            var wrapper = await WrapperOutBook.From(results).ConfigureAwait(false);
             return new OkObjectResult(wrapper);
+        }
+
+        [FunctionName("Book")]
+        public async Task<IActionResult> Book(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/book/uid/{bookUid}")] HttpRequest req,
+            ILogger log,
+            Guid bookUid)
+        {
+            //todo: validar role do jwt
+
+            var result = await BookService.Book(bookUid, new BookOptions { });
+            if (result == null) return new NotFoundObjectResult(new WrapperOutError { Message = "Livro não encontrado" });
+
+            var wrapperOut = await WrapperOutBook.From(result).ConfigureAwait(false);
+
+            return new OkObjectResult(wrapperOut);
         }
     }
 }

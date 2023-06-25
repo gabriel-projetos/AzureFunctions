@@ -10,7 +10,7 @@ namespace Interfaces.Services
     public interface IBookService
     {
         #region froms
-        Task<IBook> BookFrom(string json);
+        Task<IBook> BookFrom(string json, IBook? baseModel = null);
         #endregion
 
         Task<IBook> Create(IBook book);
@@ -21,11 +21,11 @@ namespace Interfaces.Services
 
         Task<List<IBook>> Books(BookOptions options);
 
-        Task<IBook> Get(Guid uid, BookOptions options);
+        Task<IBook> Book(Guid uid, BookOptions options);
     }
 
     public class BookOptions
     {
-        public List<EStatusType> FilterStatus { get; set; }
+        public List<EStatusType>? FilterStatus { get; set; }
     }
 }
