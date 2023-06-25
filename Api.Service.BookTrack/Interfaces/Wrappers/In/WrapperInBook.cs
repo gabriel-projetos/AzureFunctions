@@ -39,7 +39,7 @@ namespace Interfaces.Wrappers.In
         }
 
         [JsonProperty("publication")]
-        public DateTime Publication
+        public DateTime? Publication
         {
             get => Data.Publication;
             set => Data.Publication = value;

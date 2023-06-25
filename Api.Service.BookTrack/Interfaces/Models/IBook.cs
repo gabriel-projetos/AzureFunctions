@@ -26,7 +26,7 @@ namespace Interfaces.Models
         /// <summary>
         /// O ano em que o livro foi publicado.
         /// </summary>
-        DateTime Publication { get; set; }
+        DateTime? Publication { get; set; }
 
         /// <summary>
         /// O gênero literário do livro, como ficção, não ficção, romance, fantasia, etc.

@@ -10,7 +10,7 @@ namespace Api.Service.BookTrack.Models
         public List<string> Authors { get; set; }
         public string ISBN { get; set; }
         public string Publisher { get; set; }
-        public DateTime Publication { get; set; }
+        public DateTime? Publication { get; set; }
         public string Genre { get; set; }
         public string Synopsis { get; set; }
         public int TotalPages { get; set; }
