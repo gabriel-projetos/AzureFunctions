@@ -23,9 +23,11 @@ namespace Api.Service.BookTrack.Endpoints
 
         [FunctionName("BookCreate")]
         public async Task<IActionResult> BookCreate(
-            [HttpTrigger(AuthorizationLevel.Function, "post", "v1/book")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/management/book")] HttpRequest req,
             ILogger log)
         {
+            //todo: validar role do jwt
+
             var json = await req.BodyAsString().ConfigureAwait(false);
 
             var book = await BookService.BookFrom(json);
@@ -34,9 +36,9 @@ namespace Api.Service.BookTrack.Endpoints
             var result = await BookService.Create(book).ConfigureAwait(false);
             if (result == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos" });
 
-            //var wrapperOut = await WrapperOut
+            var wrapper = await WrapperOutBook.From(result).ConfigureAwait(false);
 
-            return new OkObjectResult(result);
+            return new OkObjectResult(wrapper);
         }
     }
 }

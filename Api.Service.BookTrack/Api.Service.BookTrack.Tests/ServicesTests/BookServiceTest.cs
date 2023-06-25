@@ -27,7 +27,7 @@ namespace Api.Service.BookTrack.Tests.ServicesTests
         }
 
         [Fact]
-        public async void ShouldCreateBookModel()
+        public async void ShouldCreateBook()
         {
             //arrange
             var model = new BookModel

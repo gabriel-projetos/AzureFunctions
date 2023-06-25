@@ -27,22 +27,21 @@ namespace Api.Service.BookTrack.Endpoints
 
         [FunctionName("UserCreate")]
         public async Task<IActionResult> UserCreate(
-            [HttpTrigger(AuthorizationLevel.Function, "post", "v1/user")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/user")] HttpRequest req,
             ILogger log)
         {
-            //var jwt
+            //todo validar jwt
 
-            var wr = await req.BodyDeserialize<WrapperInUser<UserModel>>();
-            if (wr == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Usuário informado inválido"});
+            var wrapperInUser = await req.BodyDeserialize<WrapperInUser<UserModel>>();
+            if (wrapperInUser == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Usuário informado inválido"});
 
-            var user = await wr.Result().ConfigureAwait(false);
+            var user = await wrapperInUser.Result().ConfigureAwait(false);
 
             var result = await UserService.Create(user).ConfigureAwait(false);
             if (result == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Dados inválidos" });
 
-            var wrOut = await WrapperOutUser.From(result).ConfigureAwait(false);
-
-            return new OkObjectResult(wrOut);
+            var wrapperOutUser = await WrapperOutUser.From(result).ConfigureAwait(false);
+            return new OkObjectResult(wrapperOutUser);
         }
 
     }
