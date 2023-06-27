@@ -68,7 +68,7 @@ namespace Api.Service.BookTrack.Endpoints
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/book/management")] HttpRequest req,
             ILogger log)
         {
-            //todo: validar role do jwt
+            //todo: validar role do jwt.
 
             var json = await req.BodyAsString().ConfigureAwait(false);
 
