@@ -51,7 +51,7 @@ namespace Api.Service.Stock
 
                 switch (config.GetConnectionStringOrSetting("DatabaseProvider"))
                 {
-                    case "MsSql":
+                    case "SqlServer":
                         // ConnectionString cadastrado em host/local.json utilizado para conectar ao banco.
                         var msSqlConnection = config.GetConnectionStringOrSetting("MsSqlConnection");
 

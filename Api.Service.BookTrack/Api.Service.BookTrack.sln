@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Service.BookTrack", "Api.Service.BookTrack.csproj", "{C8A1D8DA-CD68-4F84-9294-2E7356FE9BEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Service.BookTrack", "Api.Service.BookTrack.csproj", "{C8A1D8DA-CD68-4F84-9294-2E7356FE9BEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{FF0B9E19-8683-49B4-BD68-D066C25B3059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{FF0B9E19-8683-49B4-BD68-D066C25B3059}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Service.BookTrack.Tests", "Api.Service.BookTrack.Tests\Api.Service.BookTrack.Tests.csproj", "{3DA8EE86-8C1B-42A6-9550-EAC37BB4A52D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Service.BookTrack.Tests", "Api.Service.BookTrack.Tests\Api.Service.BookTrack.Tests.csproj", "{3DA8EE86-8C1B-42A6-9550-EAC37BB4A52D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,5 @@
 ﻿using Interfaces.Models;
+using System.Collections.Generic;
 
 namespace Api.Service.BookTrack.Models
 {
@@ -12,5 +13,12 @@ namespace Api.Service.BookTrack.Models
         public bool Blocked { set; get; }
         public string LastName { set; get; }
         public string FirstName { set; get; }
+
+        public List<AuthorizationModel> Authorizations { get; set; }
+
+        public UserModel()
+        {
+            Authorizations = new List<AuthorizationModel>();
+        }
     }
 }

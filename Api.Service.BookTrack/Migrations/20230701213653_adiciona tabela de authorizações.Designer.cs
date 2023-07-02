@@ -4,6 +4,7 @@ using Api.Service.BookTrack.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Service.BookTrack.Migrations
 {
     [DbContext(typeof(ApiServiceDbContext))]
-    partial class ApiServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230701213653_adiciona tabela de authorizações")]
+    partial class adicionatabeladeauthorizações
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,7 @@ namespace Api.Service.BookTrack.Migrations
 
                     b.HasIndex("UserUid");
 
-                    b.ToTable("Authorizations");
+                    b.ToTable("AuthorizationModel");
                 });
 
             modelBuilder.Entity("Api.Service.BookTrack.Models.BookModel", b =>

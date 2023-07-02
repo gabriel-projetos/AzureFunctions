@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Interfaces.Models.Enums;
 
 namespace Api.Service.BookTrack.Context
 {
@@ -18,6 +20,8 @@ namespace Api.Service.BookTrack.Context
     {
         internal DbSet<UserModel> Users { get; set; }
         internal DbSet<BookModel> Books { get; set; }
+
+        internal DbSet<AuthorizationModel> Authorizations { get; set; }
 
         public ApiServiceDbContext(DbContextOptions<ApiServiceDbContext> ctx) : base(ctx) { }
 
@@ -32,6 +36,7 @@ namespace Api.Service.BookTrack.Context
             modelBuilder.Entity<UserModel>().Property(m => m.Password).IsRequired();
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
+            modelBuilder.Entity<UserModel>().HasMany(x => x.Authorizations).WithOne(x => x.User).HasForeignKey(x => x.UserUid);
 
             DefaultModelSetup<BookModel>(modelBuilder);
             modelBuilder.Entity<BookModel>().Property(m => m.Status).HasConversion(new EnumToStringConverter<EStatusType>()).HasMaxLength(50);
@@ -46,6 +51,9 @@ namespace Api.Service.BookTrack.Context
                 .Property(e => e.Authors)
                 .Metadata
                 .SetValueComparer(valueComparer);
+
+            DefaultModelSetup<AuthorizationModel>(modelBuilder);
+            modelBuilder.Entity<AuthorizationModel>().Property(x => x.Role).HasConversion(new EnumToStringConverter<ERole>());
 
         }
 

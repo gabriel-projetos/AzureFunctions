@@ -1,22 +1,25 @@
-﻿using Interfaces.Models;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Azure.WebJobs;
+﻿using Api.Service.BookTrack.Models;
+using Interfaces.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static Interfaces.Models.Enums;
 
-namespace Api.Service.UserRegistration.Models
+namespace Interfaces.Jwt
 {
     public class JwtData
     {
         private const string ClaimUserUid = "user_uid";
         private const string ClaimEmail = "email";
         private const string ClaimRole = "role";
+
+        public UserModel Model { get; set; }
 
         public JwtData(IUser model)
         {
@@ -29,10 +32,8 @@ namespace Api.Service.UserRegistration.Models
         }
 
         public JwtSecurityToken JwtToken { get; set; }
-        
-        public List<Claim> AdditionalClaims { get; set; } = new List<Claim>();
 
-        public UserModel Model { get; set; }
+        public List<Claim> AdditionalClaims { get; set; } = new List<Claim>();
 
         public string Jwt { get; set; }
 
@@ -52,12 +53,12 @@ namespace Api.Service.UserRegistration.Models
 
             foreach (var permission in Model.Authorizations)
             {
-                claims.Add(new Claim(ClaimRole, permission.Role.ToString()));
+                claims.Add(new Claim(ClaimRole, permission.Role.ToString(), null));
             }
 
             return claims;
         }
-        
+
         public async Task CreateUserModel()
         {
             var data = new UserModel();
@@ -68,7 +69,7 @@ namespace Api.Service.UserRegistration.Models
 
                 switch (clam.Type)
                 {
-                    
+
                     case ClaimUserUid:
                         {
                             data.Uid = Guid.Parse(clam.Value);
@@ -83,7 +84,6 @@ namespace Api.Service.UserRegistration.Models
                                     Role = role
                                 });
                             }
-
                             break;
                         }
                     default:
