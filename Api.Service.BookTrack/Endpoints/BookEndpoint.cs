@@ -55,5 +55,13 @@ namespace Api.Service.BookTrack.Endpoints
 
             return new OkObjectResult(wrapperOut);
         }
+
+        [FunctionName("Loans")]
+        public async Task<IActionResult> Loans(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/loans")] HttpRequest req,
+            ILogger log)
+        {
+            return new OkResult();
+        }
     }
 }
