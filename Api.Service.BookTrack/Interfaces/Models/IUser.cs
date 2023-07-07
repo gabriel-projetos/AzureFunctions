@@ -23,5 +23,7 @@ namespace Interfaces.Models
         string PhoneNumber { get; set; }
 
         bool Blocked { get; set; }
+
+        List<IAuthorization> Authorizations { get; set; }
     }
 }

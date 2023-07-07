@@ -88,7 +88,7 @@ namespace Api.Service.BookTrack.Services
                     //    Name = name,
                     //    FirstName = name
                     //},
-                    Authorizations = new List<AuthorizationModel>
+                    Authorizations = new List<IAuthorization>
                     {
                         permission
                     }

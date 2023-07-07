@@ -1,5 +1,6 @@
 ﻿using Interfaces.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Service.BookTrack.Models
 {
@@ -14,11 +15,22 @@ namespace Api.Service.BookTrack.Models
         public string LastName { set; get; }
         public string FirstName { set; get; }
 
-        public List<AuthorizationModel> Authorizations { get; set; }
+        internal List<AuthorizationModel> DbRoles { get; set; }
+        public List<IAuthorization> Authorizations 
+        { 
+            get
+            {
+                return new List<IAuthorization>(DbRoles);
+            }
+            set
+            {
+                DbRoles = value.Cast<AuthorizationModel>().ToList();
+            }
+        }
 
         public UserModel()
         {
-            Authorizations = new List<AuthorizationModel>();
+            DbRoles = new List<AuthorizationModel>();
         }
     }
 }

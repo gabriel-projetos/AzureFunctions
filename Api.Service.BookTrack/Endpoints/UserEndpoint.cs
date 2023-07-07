@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Interfaces.Models.Enums;
 
 namespace Api.Service.BookTrack.Endpoints
 {
@@ -25,12 +26,19 @@ namespace Api.Service.BookTrack.Endpoints
             UserService = userService;
         }
 
+        public List<ERole> ManagementUser = new List<ERole>
+        {
+            ERole.AdministratorGlobal
+        };
+
         [FunctionName("UserCreate")]
         public async Task<IActionResult> UserCreate(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/user")] HttpRequest req,
             ILogger log)
         {
             //todo validar jwt
+            var jwt = await req.JwtInfo().ConfigureAwait(false);
+            if (jwt.Model.HasAnyRole(ManagementUser)) return new UnauthorizedResult();
 
             var wrapperInUser = await req.BodyDeserialize<WrapperInUser<UserModel>>();
             if (wrapperInUser == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Usuário informado inválido"});

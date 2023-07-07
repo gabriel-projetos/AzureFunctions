@@ -14,7 +14,8 @@ namespace Interfaces.Models
             Annonymos,
             Admin,
             Viewer,
-            PlatformSuper
+            PlatformSuper,
+            AdministratorGlobal
         }
     }
 }

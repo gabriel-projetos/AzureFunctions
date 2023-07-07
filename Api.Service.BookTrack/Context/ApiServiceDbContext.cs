@@ -34,9 +34,9 @@ namespace Api.Service.BookTrack.Context
             DefaultModelSetup<UserModel>(modelBuilder);
             modelBuilder.Entity<UserModel>().Property(m => m.Login).IsRequired();
             modelBuilder.Entity<UserModel>().Property(m => m.Password).IsRequired();
+            modelBuilder.Entity<UserModel>().Ignore(m => m.Authorizations);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
-            modelBuilder.Entity<UserModel>().HasMany(x => x.Authorizations).WithOne(x => x.User).HasForeignKey(x => x.UserUid);
 
             DefaultModelSetup<BookModel>(modelBuilder);
             modelBuilder.Entity<BookModel>().Property(m => m.Status).HasConversion(new EnumToStringConverter<EStatusType>()).HasMaxLength(50);
@@ -54,6 +54,7 @@ namespace Api.Service.BookTrack.Context
 
             DefaultModelSetup<AuthorizationModel>(modelBuilder);
             modelBuilder.Entity<AuthorizationModel>().Property(x => x.Role).HasConversion(new EnumToStringConverter<ERole>());
+            modelBuilder.Entity<AuthorizationModel>().HasOne(m => m.DbUser).WithMany(p => p.DbRoles).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
         }
 
