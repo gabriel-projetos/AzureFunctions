@@ -51,7 +51,7 @@ namespace Interfaces.Jwt
             //claims.Add(new Claim(ClaimName, Model.Detail.Name ?? ""));
             claims.Add(new Claim(ClaimUserUid, Model.Uid.ToString()));
 
-            foreach (var permission in Model.Authorizations)
+            foreach (var permission in Model.DbRoles)
             {
                 claims.Add(new Claim(ClaimRole, permission.Role.ToString(), null));
             }
@@ -79,7 +79,7 @@ namespace Interfaces.Jwt
                         {
                             if (Enum.TryParse<ERole>(clam.Value, out var role))
                             {
-                                data.Authorizations.Add(new AuthorizationModel
+                                data.DbRoles.Add(new AuthorizationModel
                                 {
                                     Role = role
                                 });

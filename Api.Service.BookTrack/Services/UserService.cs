@@ -29,7 +29,7 @@ namespace Api.Service.BookTrack.Services
 
             if (model.Password == null) model.Password = Guid.NewGuid().ToString();
 
-            //convert password
+            model.Password = ConvertPassword(model.Password);
 
             Context.Users.Add(model);
             await Context.SaveChangesAsync();
@@ -39,7 +39,7 @@ namespace Api.Service.BookTrack.Services
 
         public async Task<UserModel> Validade(string login, string password)
         {
-            var remoteUser = await Context.Users.Where(m => m.Login == login).Include(x => x.Authorizations).FirstOrDefaultAsync();
+            var remoteUser = await Context.Users.Where(m => m.Login == login).Include(x => x.DbRoles).FirstOrDefaultAsync();
 
             if (remoteUser != null && !await CorrectPassword(password, remoteUser.Password))
             {
@@ -61,7 +61,7 @@ namespace Api.Service.BookTrack.Services
 
         public async Task<UserModel> SetupSuperUser(string login, string password)
         {
-            var platformUsers = await Context.Users.Where(p => p.Authorizations.Any(r => r.Role == ERole.PlatformSuper)).ToListAsync();
+            var platformUsers = await Context.Users.Where(p => p.DbRoles.Any(r => r.Role == ERole.PlatformSuper)).ToListAsync();
             var removeUsers = platformUsers.Where(p => p.Login != login).ToList();
             var currentUser = platformUsers.FirstOrDefault(p => p.Login == login);
             var updated = false;

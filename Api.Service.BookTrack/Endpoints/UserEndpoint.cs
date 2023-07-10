@@ -28,7 +28,8 @@ namespace Api.Service.BookTrack.Endpoints
 
         public List<ERole> ManagementUser = new List<ERole>
         {
-            ERole.AdministratorGlobal
+            ERole.AdministratorGlobal,
+            ERole.PlatformSuper
         };
 
         [FunctionName("UserCreate")]
@@ -36,9 +37,8 @@ namespace Api.Service.BookTrack.Endpoints
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/user")] HttpRequest req,
             ILogger log)
         {
-            //todo validar jwt
             var jwt = await req.JwtInfo().ConfigureAwait(false);
-            if (jwt.Model.HasAnyRole(ManagementUser)) return new UnauthorizedResult();
+            if (jwt.Model.HasAnyRole(ManagementUser) == false) return new UnauthorizedResult();
 
             var wrapperInUser = await req.BodyDeserialize<WrapperInUser<UserModel>>();
             if (wrapperInUser == null) return new BadRequestObjectResult(new WrapperOutError { Message = "Usuário informado inválido"});

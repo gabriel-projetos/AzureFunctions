@@ -32,7 +32,8 @@ namespace Api.Service.BookTrack.Endpoints
 
             var options = new BookOptions();
 
-            if (req.Query.ContainsKey("status_type")) options.FilterStatus = req.Query["status_type"].Select(p => Enum.Parse<EStatusType>(p, true)).ToList();
+            if (req.Query.ContainsKey("status_type")) 
+                options.FilterStatus = req.Query["status_type"].Select(p => Enum.Parse<EStatusType>(p, true)).ToList();
 
             var results = await BookService.Books(options).ConfigureAwait(false);
 
