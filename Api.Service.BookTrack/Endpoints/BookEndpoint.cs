@@ -57,6 +57,26 @@ namespace Api.Service.BookTrack.Endpoints
             return new OkObjectResult(wrapperOut);
         }
 
+        [FunctionName("SearchBook")]
+        public async Task<IActionResult> SearchBook(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/search/books")] HttpRequest req,
+            ILogger log)
+        {
+            //todo: validar role do jwt
+
+            var options = new BookOptions();
+
+            if (req.Query.ContainsKey("status_type"))
+                options.FilterStatus = req.Query["status_type"].Select(p => Enum.Parse<EStatusType>(p, true)).ToList();
+            if (req.Query.ContainsKey("title")) options.FilterTitle = req.Query["title"];
+
+            var results = await BookService.Books(options);
+
+            var wrapperOut = await WrapperOutBook.From(results).ConfigureAwait(false);
+
+            return new OkObjectResult(wrapperOut);
+        }
+
         [FunctionName("Loans")]
         public async Task<IActionResult> Loans(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/loans")] HttpRequest req,

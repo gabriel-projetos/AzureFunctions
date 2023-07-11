@@ -20,17 +20,16 @@ namespace Api.Service.BookTrack.Endpoints
     internal class UserEndpoint
     {
         public UserService UserService { get; set; }
+        public List<ERole> ManagementUser { get; set; } = new List<ERole>
+        {
+            ERole.AdministratorGlobal,
+            ERole.PlatformSuper
+        };
 
         public UserEndpoint(UserService userService)
         {
             UserService = userService;
         }
-
-        public List<ERole> ManagementUser = new List<ERole>
-        {
-            ERole.AdministratorGlobal,
-            ERole.PlatformSuper
-        };
 
         [FunctionName("UserCreate")]
         public async Task<IActionResult> UserCreate(
@@ -51,6 +50,5 @@ namespace Api.Service.BookTrack.Endpoints
             var wrapperOutUser = await WrapperOutUser.From(result).ConfigureAwait(false);
             return new OkObjectResult(wrapperOutUser);
         }
-
     }
 }

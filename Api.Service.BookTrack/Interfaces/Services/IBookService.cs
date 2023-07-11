@@ -27,5 +27,19 @@ namespace Interfaces.Services
     public class BookOptions
     {
         public List<EStatusType>? FilterStatus { get; set; }
+
+        public string? FilterTitle { get; set; }
+
+        public string? FilterAuthor { get; set; }
+
+        public string? FilterISBN { get; set; }
+
+        public string? FilterPublisher { get; set; }
+
+        public DateTime? FilterPublication { get; set; }
+
+        public string? FilterGenre { get; set; }
+
+        public string? FilterLanguage { get; set; }
     }
 }
