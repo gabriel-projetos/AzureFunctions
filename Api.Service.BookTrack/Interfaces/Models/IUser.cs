@@ -25,5 +25,7 @@ namespace Interfaces.Models
         bool Blocked { get; set; }
 
         List<IAuthorization> Authorizations { get; set; }
+
+        List<ILoan> Loans { get; set; }
     }
 }

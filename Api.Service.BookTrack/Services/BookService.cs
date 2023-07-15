@@ -76,8 +76,6 @@ namespace Api.Service.BookTrack.Services
         {
             var query = Context.Books.AsQueryable();
 
-            
-
             if (options?.FilterStatus != null) query = query.Where(x => options.FilterStatus.Contains(x.Status));
             if (options?.FilterTitle != null) query = query.Where(x => EF.Functions.Like(x.Title, $"%{options.FilterTitle}%"));
 

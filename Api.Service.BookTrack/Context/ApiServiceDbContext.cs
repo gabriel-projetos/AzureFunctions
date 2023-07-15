@@ -20,6 +20,7 @@ namespace Api.Service.BookTrack.Context
     {
         internal DbSet<UserModel> Users { get; set; }
         internal DbSet<BookModel> Books { get; set; }
+        internal DbSet<LoanModel> Loans { get; set; }
 
         internal DbSet<AuthorizationModel> Authorizations { get; set; }
 
@@ -35,13 +36,14 @@ namespace Api.Service.BookTrack.Context
             modelBuilder.Entity<UserModel>().Property(m => m.Login).IsRequired();
             modelBuilder.Entity<UserModel>().Property(m => m.Password).IsRequired();
             modelBuilder.Entity<UserModel>().Ignore(m => m.Authorizations);
+            modelBuilder.Entity<UserModel>().Ignore(m => m.Loans);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IncludeProperties(p => p.Password).IsUnique(false);
             modelBuilder.Entity<UserModel>().HasIndex(m => m.Login).IsUnique();
 
             DefaultModelSetup<BookModel>(modelBuilder);
             modelBuilder.Entity<BookModel>().Property(m => m.Status).HasConversion(new EnumToStringConverter<EStatusType>()).HasMaxLength(50);
             modelBuilder.Entity<BookModel>().Property(m => m.Authors).HasConversion(convertListString).HasMaxLength(1024);
-
+            modelBuilder.Entity<BookModel>().Ignore(m => m.Loans);
             var valueComparer = new ValueComparer<List<string>>(
                 (c1, c2) => c1.SequenceEqual(c2),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
@@ -56,6 +58,9 @@ namespace Api.Service.BookTrack.Context
             modelBuilder.Entity<AuthorizationModel>().Property(x => x.Role).HasConversion(new EnumToStringConverter<ERole>());
             modelBuilder.Entity<AuthorizationModel>().HasOne(m => m.DbUser).WithMany(p => p.DbRoles).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
+            DefaultModelSetup<LoanModel>(modelBuilder);
+            modelBuilder.Entity<LoanModel>().HasOne(l => l.DbBook).WithMany(b => b.DbLoans).HasForeignKey(l => l.BookUid);
+            modelBuilder.Entity<LoanModel>().HasOne(l => l.DbUser).WithMany(u => u.DbLoans).HasForeignKey(l => l.UserUid);
         }
 
         public override int SaveChanges()

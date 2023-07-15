@@ -1,6 +1,7 @@
 ﻿using Interfaces.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Service.BookTrack.Models
 {
@@ -21,5 +22,23 @@ namespace Api.Service.BookTrack.Models
         public int TotalCopies { get; set; }
         public int CopiesRented { get; set; }
         public byte[] BookCover { get; set; }
+
+        internal List<LoanModel> DbLoans { get; set; }
+        public List<ILoan> Loans
+        {
+            get
+            {
+                return new List<ILoan>(DbLoans);
+            }
+            set
+            {
+                DbLoans = value.Cast<LoanModel>().ToList();
+            }
+        }
+
+        public BookModel()
+        {
+            DbLoans = new List<LoanModel>();
+        }
     }
 }

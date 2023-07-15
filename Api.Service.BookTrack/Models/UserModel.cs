@@ -28,9 +28,23 @@ namespace Api.Service.BookTrack.Models
             }
         }
 
+        internal List<LoanModel> DbLoans { get; set; }
+        public List<ILoan> Loans
+        {
+            get
+            {
+                return new List<ILoan>(DbLoans);
+            }
+            set
+            {
+                DbLoans = value.Cast<LoanModel>().ToList();
+            }
+        }
+
         public UserModel()
         {
             DbRoles = new List<AuthorizationModel>();
+            DbLoans = new List<LoanModel>();
         }
     }
 }

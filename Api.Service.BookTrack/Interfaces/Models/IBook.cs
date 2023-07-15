@@ -77,6 +77,8 @@ namespace Interfaces.Models
         /// capa do livro
         /// </summary>
         byte[] BookCover { get; set; }
+
+        List<ILoan> Loans { get; set; }
     }
 
     public enum EStatusType
