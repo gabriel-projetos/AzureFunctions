@@ -4,10 +4,13 @@
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Api.Service.BookTrack.Integration.Tests\**" />
     <Compile Remove="Api.Service.BookTrack.Tests\**" />
     <Compile Remove="Interfaces\**" />
+    <EmbeddedResource Remove="Api.Service.BookTrack.Integration.Tests\**" />
     <EmbeddedResource Remove="Api.Service.BookTrack.Tests\**" />
     <EmbeddedResource Remove="Interfaces\**" />
+    <None Remove="Api.Service.BookTrack.Integration.Tests\**" />
     <None Remove="Api.Service.BookTrack.Tests\**" />
     <None Remove="Interfaces\**" />
   </ItemGroup>

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Service.BookTrack.Tests", "Api.Service.BookTrack.Tests\Api.Service.BookTrack.Tests.csproj", "{3DA8EE86-8C1B-42A6-9550-EAC37BB4A52D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Service.BookTrack.Integration.Tests", "Api.Service.BookTrack.Integration.Tests\Api.Service.BookTrack.Integration.Tests.csproj", "{3C299C46-DB39-45EA-BA54-4210C1679975}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3DA8EE86-8C1B-42A6-9550-EAC37BB4A52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA8EE86-8C1B-42A6-9550-EAC37BB4A52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DA8EE86-8C1B-42A6-9550-EAC37BB4A52D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C299C46-DB39-45EA-BA54-4210C1679975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C299C46-DB39-45EA-BA54-4210C1679975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C299C46-DB39-45EA-BA54-4210C1679975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C299C46-DB39-45EA-BA54-4210C1679975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
